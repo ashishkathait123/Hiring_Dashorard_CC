@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Custom styles if needed */
+.custom-sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-sidebar li:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .custom-sidebar img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
