@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Navbar from '../navbar/Navbar';
-import Footer from '../footer/Footer';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Navbar from "../navbar/Navbar";
+import Footer from "../footer/Footer";
 
 function Home() {
   const [jobs, setJobs] = useState([]);
-  const [location, setLocation] = useState('Gurugram, India');
-  const [search, setSearch] = useState('');
+  const [location, setLocation] = useState("Gurugram, India");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     // Fetch jobs from API
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/v1/jobs');
+        const response = await axios.get("http://localhost:3000/api/v1/jobs");
         setJobs(response.data);
       } catch (error) {
-        console.error('Error fetching jobs', error);
+        console.error("Error fetching jobs", error);
       }
     };
 
@@ -57,7 +57,10 @@ function Home() {
 
           <div className="space-y-4">
             {jobs.map((job, index) => (
-              <div key={index} className="border rounded p-4 flex flex-col sm:flex-row justify-between items-center">
+              <div
+                key={index}
+                className="border rounded p-4 flex flex-col sm:flex-row justify-between items-center"
+              >
                 <div className="mb-4 sm:mb-0 sm:mr-4">
                   <h4 className="text-lg font-semibold">{job.title}</h4>
                   <p className="text-gray-600">{job.location}</p>
@@ -65,14 +68,16 @@ function Home() {
                     {job.types.map((type, idx) => (
                       <span
                         key={idx}
-                        className={`text-sm ${type === 'Full-Time' ? 'bg-green-100 text-green-800' : type === 'Part-Time' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'} rounded px-2 py-1`}
+                        className={`text-sm ${type === "Full-Time" ? "bg-green-100 text-green-800" : type === "Part-Time" ? "bg-yellow-100 text-yellow-800" : "bg-blue-100 text-blue-800"} rounded px-2 py-1`}
                       >
                         {type}
                       </span>
                     ))}
                   </div>
                 </div>
-                <button className="bg-indigo-600 text-white py-2 px-4 rounded">Apply</button>
+                <button className="bg-indigo-600 text-white py-2 px-4 rounded">
+                  Apply
+                </button>
               </div>
             ))}
           </div>

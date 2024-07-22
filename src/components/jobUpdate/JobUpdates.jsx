@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const JobUpdates = () => {
   const [jobUpdates, setJobUpdates] = useState([]);
 
   useEffect(() => {
     // Fetch job updates from the API
-    axios.get('/api/job-updates')
-      .then(response => {
+    axios
+      .get("/api/job-updates")
+      .then((response) => {
         setJobUpdates(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching job updates:', error);
+      .catch((error) => {
+        console.error("Error fetching job updates:", error);
       });
   }, []);
 
@@ -33,7 +34,9 @@ const JobUpdates = () => {
         ))} */}
       </div>
       <div className="text-right mt-4">
-        <a href="/job-updates" className="text-blue-500">View All</a>
+        <a href="/job-updates" className="text-blue-500">
+          View All
+        </a>
       </div>
     </div>
   );
