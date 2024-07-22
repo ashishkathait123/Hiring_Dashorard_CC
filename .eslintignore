@@ -2,12 +2,17 @@
 build/
 dist/
 
+<<<<<<< HEAD
 # Logs
 logs/
 *.log
 
 # Environment-specific files
 .env
+=======
+# Assets
+public/assets/
+>>>>>>> 8b36564ba86716deb2733c6d3bbd08c08ad852f2
 
 # IDE and editor settings
 .vscode/

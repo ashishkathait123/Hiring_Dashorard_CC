@@ -1,13 +1,25 @@
+<<<<<<< HEAD
  <!-- Ignore node_modules -->
 node_modules/
 
  <!-- Ignore environment files -->
+=======
+# Ignore build output
+build/
+dist/
+
+# Ignore node_modules
+node_modules/
+
+# Ignore environment files
+>>>>>>> 8b36564ba86716deb2733c6d3bbd08c08ad852f2
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+<<<<<<< HEAD
  <!-- Ignore build output -->
 build/
 dist/
@@ -28,3 +40,20 @@ config/*.json
 
  <!-- Ignore all JavaScript files in a specific directory -->
 vendor/*.js
+=======
+# Ignore specific configuration files
+.vscode/
+.idea/
+
+# Ignore coverage directory
+coverage/
+
+# Ignore public directory
+public/
+
+# Ignore all JSON files in a specific directory
+src/config/*.json
+
+# Ignore all JavaScript files in a specific directory
+src/vendor/*.js
+>>>>>>> 8b36564ba86716deb2733c6d3bbd08c08ad852f2
