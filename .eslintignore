@@ -1,0 +1,17 @@
+# Build outputs
+build/
+dist/
+
+# Logs
+logs/
+*.log
+
+# Environment-specific files
+.env
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
