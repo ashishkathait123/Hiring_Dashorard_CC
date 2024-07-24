@@ -19,8 +19,7 @@ app.use(cookieParser());
 
 try {
   app.use("/api/v1/users", userRouter);
-}
- catch (error) {
+} catch (error) {
   console.log("error throw", error);
 }
 

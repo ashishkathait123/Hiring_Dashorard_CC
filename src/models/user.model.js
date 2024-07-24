@@ -1,19 +1,21 @@
 import mongoose, { Schema, modelNames } from "mongoose";
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema({
-  FullName: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  profile: { type: String },
-  refreshToken: { type: String },
-}, { timestamps: true });
+const userSchema = new mongoose.Schema(
+  {
+    FullName: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    profile: { type: String },
+    refreshToken: { type: String },
+  },
+  { timestamps: true }
+);
 
 // Password hashing
-userSchema.pre("save", async function (next) 
-{
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);

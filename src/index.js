@@ -15,5 +15,5 @@ connectDB()
   });
 
 app.on("error", (error) => {
- console.error("Server error:", error);
+  console.error("Server error:", error);
 });

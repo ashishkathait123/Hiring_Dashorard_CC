@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 module.exports = {
   env: {
     node: true, // This enables Node.js global variables like `process`
@@ -13,8 +12,8 @@ module.exports = {
     // Add custom rules if needed
   },
 };
-=======
-import globals from "globals";
+
+import globals from "globals" ;
 import pluginJs from "@eslint/js";
 import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
 import { fixupConfigRules } from "@eslint/compat";
@@ -27,4 +26,3 @@ export default [
   pluginJs.configs.recommended,
   ...fixupConfigRules(pluginReactConfig),
 ];
->>>>>>> 8b36564ba86716deb2733c6d3bbd08c08ad852f2
