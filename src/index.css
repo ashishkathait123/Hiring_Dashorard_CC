@@ -2,21 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Custom styles if needed */
 .custom-sidebar {
-    width: 250px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-sidebar li:hover {
+  background-color: #f1f5f9;
+}
+
+.custom-sidebar img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Responsive layout for charts and job updates */
+.chart-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.job-updates-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.job-updates-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  animation: scroll-left 20s linear infinite;
+}
+
+.job-update-item {
+  flex: 0 0 auto;
+  background-color: #f3f4f6; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  margin-right: 16px;
+  width: 300px; /* Adjust width as needed */
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
   }
-  
-  .custom-sidebar li:hover {
-    background-color: #f1f5f9;
+  100% {
+    transform: translateX(-100%);
   }
-  
-  .custom-sidebar img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+/* Hide horizontal scrollbar */
+body {
+  overflow-x: hidden;
+}
+
+/* Responsive text sizes */
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.md\:text-xl {
+  font-size: 1.25rem;
+}
+
+.md\:text-2xl {
+  font-size: 1.5rem;
+}
+.chart-container {
+  width: 100%;
+  min-width: 500px; 
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    min-width: 500px; 
   }
-  
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    min-width: 200px; /* Adjust for very small screens */
+  }
+}
+.my-schedule-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fc {
+  font-family: 'Arial', sans-serif;
+}

@@ -1,0 +1,13 @@
+# Build outputs
+build/
+dist/
+
+# Assets
+public/assets/
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store

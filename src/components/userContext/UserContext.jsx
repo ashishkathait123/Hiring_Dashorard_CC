@@ -1,13 +1,24 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
-
 export const useUser = () => {
   return useContext(UserContext);
 };
-
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    // Get user data from local storage
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  useEffect(() => {
+    // Save user data to local storage
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user"); 
+    }
+  }, [user]);
 
   useEffect(() => {
     // Mock fetching user data, replace with actual logic
@@ -28,8 +39,9 @@ export const UserProvider = ({ children }) => {
 
 const getUserData = async () => {
   // Replace with actual fetch logic
-  return {
-    email: 'test@example.com',
-    profile: 'http://localhost:3000/api/v1/users/profile.jpg'
+   return {
+    FullName:"user name",
+    email: "test@example.com",
+    profile: "http://localhost:3000/api/v1/users/profile.jpg",
   };
 };
