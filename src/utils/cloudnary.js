@@ -20,7 +20,7 @@ const uploadonCloudnary = async (localFilePath) => {
     return reponse;
   } catch (error) {
     fs.unlinkSync(localFilePath); //remove the locally saved temporary file
-    return null;
+    return null; 
   }
 };
 export { uploadonCloudnary };
