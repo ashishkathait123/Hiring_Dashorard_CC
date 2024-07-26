@@ -14,7 +14,7 @@ const App = () => {
     RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1'
   }];
 
-  return (
+  return ( 
     <div>
       <ScheduleComponent height='650px' eventSettings={{ dataSource: data }}>
         <ViewsDirective>

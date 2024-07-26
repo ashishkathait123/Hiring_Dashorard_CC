@@ -4,10 +4,10 @@ import App from "./App.jsx";
 import "./index.css";
 import { UserProvider } from "./components/userContext/UserContext.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")).render( 
    <UserProvider>
     <App />
 
    </UserProvider>
 );
- 
+  

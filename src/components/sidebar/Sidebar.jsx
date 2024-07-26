@@ -12,7 +12,7 @@ import {
 import { useUser } from "../userContext/UserContext";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // Importing icons for dropdown
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ( ) => {
   const [activeLink, setActiveLink] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
   const location = useLocation();

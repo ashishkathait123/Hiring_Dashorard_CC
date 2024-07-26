@@ -83,7 +83,7 @@ const dummyJobs = [
     location: "Tehri Garhwal, India",
     types: ["Full-Time"]
   }
-];
+]; 
 
 function Home() {
   const [jobs, setJobs] = useState([]);

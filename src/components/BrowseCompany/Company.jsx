@@ -153,7 +153,7 @@ function Comapny() {
               Working at ColoreCow
             </h2>
             <div className="grid grid-cols-3 gap-4">
-              <div>
+              <div> 
                 <img
                   src={grpImg}
                   alt="Working at ColoredCow"

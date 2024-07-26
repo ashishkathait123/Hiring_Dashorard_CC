@@ -57,7 +57,7 @@ const JobUpdates = () => {
       setJobUpdates(dummyJobUpdates);
     } else {
       // Fetch job updates from the API
-      axios
+      axios 
         .get("/api/job-updates")
         .then((response) => {
           setJobUpdates(response.data);

@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../assets/logo.png";
 
-function Footer() {
+function Footer() { 
   return (
     <footer className="bg-gray-900 text-gray-200 py-12">
       <div className="container mx-auto px-4 flex flex-col lg:flex-row justify-between">

@@ -97,7 +97,7 @@ const MySchedule = () => {
                       {categories.map((category, index) => (
                         <option key={index} value={category.name}>{category.name}</option>
                       ))}
-                    </select>
+                    </select> 
                   </div>
                   <div className="mt-2">
                     <label className="block text-sm font-medium">Date & Time</label>

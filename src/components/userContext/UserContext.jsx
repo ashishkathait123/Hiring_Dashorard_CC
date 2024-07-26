@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
       localStorage.removeItem("user"); 
-    }
+    } 
   }, [user]);
 
   useEffect(() => {

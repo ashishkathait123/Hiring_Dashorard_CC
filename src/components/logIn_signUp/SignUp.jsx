@@ -62,7 +62,7 @@ function SignUp() {
           />
         </Link>
         <div className="flex flex-col items-center">
-          <img
+          <img 
             src={grpImg}
             alt="Office Scene"
             className="rounded-lg shadow-lg mb-4"

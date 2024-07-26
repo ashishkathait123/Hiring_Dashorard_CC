@@ -92,7 +92,7 @@ const JobListing = ({ user }) => {
                   <tr className="bg-gray-200">
                     <th className="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm md:text-base">
                       Roles
-                    </th>
+                    </th> 
                     <th className="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm md:text-base">
                       Status
                     </th>

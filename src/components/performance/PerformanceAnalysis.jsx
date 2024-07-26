@@ -33,7 +33,7 @@ const Performance = () => {
         const [viewsResponse, appliedResponse, sourceResponse, hireResponse] = await Promise.all([
           axios.get('/api/total-views'),
           axios.get('/api/total-applied'),
-          axios.get('/api/source-effectiveness'),
+          axios.get('/api/source-effectiveness'), 
           axios.get('/api/time-to-hire-trends')
         ]);
 

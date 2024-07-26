@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopNav from "../dashboard/dashboardNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Applicants = ({ user }) => {
   const [applicants, setApplicants] = useState([]);
@@ -12,43 +13,12 @@ const Applicants = ({ user }) => {
   const [selectedStage, setSelectedStage] = useState("All");
   const [selectedRole, setSelectedRole] = useState("All");
 
-  // Dummy data
   const dummyData = [
-    {
-      id: 1,
-      fullName: "John Doe",
-      hiringStage: "Interview",
-      appliedDate: "2024-07-01",
-      jobRole: "Software Engineer",
-    },
-    {
-      id: 2,
-      fullName: "Jane Smith",
-      hiringStage: "Application Review",
-      appliedDate: "2024-07-02",
-      jobRole: "Product Manager",
-    },
-    {
-      id: 3,
-      fullName: "Emily Johnson",
-      hiringStage: "Screening",
-      appliedDate: "2024-07-03",
-      jobRole: "UX Designer",
-    },
-    {
-      id: 4,
-      fullName: "Michael Brown",
-      hiringStage: "Interview",
-      appliedDate: "2024-07-04",
-      jobRole: "Data Scientist",
-    },
-    {
-      id: 5,
-      fullName: "Sarah Wilson",
-      hiringStage: "Offer",
-      appliedDate: "2024-07-05",
-      jobRole: "Backend Developer",
-    },
+    { id: 1, fullName: "John Doe", hiringStage: "Interview", appliedDate: "2024-07-01", jobRole: "Software Engineer" },
+    { id: 2, fullName: "Jane Smith", hiringStage: "Application Review", appliedDate: "2024-07-02", jobRole: "Product Manager" },
+    { id: 3, fullName: "Emily Johnson", hiringStage: "Screening", appliedDate: "2024-07-03", jobRole: "UX Designer" },
+    { id: 4, fullName: "Michael Brown", hiringStage: "Interview", appliedDate: "2024-07-04", jobRole: "Data Scientist" },
+    { id: 5, fullName: "Sarah Wilson", hiringStage: "Offer", appliedDate: "2024-07-05", jobRole: "Backend Developer" },
   ];
 
   useEffect(() => {
@@ -69,38 +39,22 @@ const Applicants = ({ user }) => {
     fetchApplicants();
   }, []);
 
-  // Handle filter change
-  const handleStageChange = (e) => {
-    setSelectedStage(e.target.value);
-  };
-
-  const handleRoleChange = (e) => {
-    setSelectedRole(e.target.value);
-  };
+  const handleStageChange = (e) => setSelectedStage(e.target.value);
+  const handleRoleChange = (e) => setSelectedRole(e.target.value);
 
   useEffect(() => {
     let filtered = [...dummyData];
     if (selectedStage !== "All") {
-      filtered = filtered.filter(
-        (applicant) => applicant.hiringStage === selectedStage
-      );
+      filtered = filtered.filter((applicant) => applicant.hiringStage === selectedStage);
     }
     if (selectedRole !== "All") {
-      filtered = filtered.filter(
-        (applicant) => applicant.jobRole === selectedRole
-      );
+      filtered = filtered.filter((applicant) => applicant.jobRole === selectedRole);
     }
     setFilteredApplicants(filtered);
   }, [selectedStage, selectedRole]);
 
-  // const stages = Array.from(new Set(applicants.map(applicant => applicant.hiringStage)));
-  const stages = Array.from(
-    new Set(dummyData.map((applicant) => applicant.hiringStage))
-  );
-  // const roles = Array.from(new Set(applicants.map(applicant => applicant.jobRole)));
-  const roles = Array.from(
-    new Set(dummyData.map((applicant) => applicant.jobRole))
-  );
+  const stages = Array.from(new Set(dummyData.map((applicant) => applicant.hiringStage)));
+  const roles = Array.from(new Set(dummyData.map((applicant) => applicant.jobRole)));
 
   const stageOptions = ["All", ...stages];
   const roleOptions = ["All", ...roles];
@@ -123,9 +77,7 @@ const Applicants = ({ user }) => {
   return (
     <div className="flex flex-col lg:flex-row h-screen overflow-hidden bg-gray-100">
       <Sidebar user={user} isOpen={isSidebarOpen} />
-      <div
-        className={`flex-grow transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-0"} lg:ml-64`}
-      >
+      <div className={`flex-grow transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-0"} lg:ml-64`}>
         <TopNav />
         <div className="p-4 sm:p-6 lg:p-8 flex-grow overflow-auto">
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 lg:p-8">
@@ -135,18 +87,10 @@ const Applicants = ({ user }) => {
               </h2>
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                 <div className="flex items-center space-x-2">
-                  <label
-                    htmlFor="stage"
-                    className="text-sm font-medium text-gray-600"
-                  >
+                  <label htmlFor="stage" className="text-sm font-medium text-gray-600">
                     Filter by Hiring Stage:
                   </label>
-                  <select
-                    id="stage"
-                    value={selectedStage}
-                    onChange={handleStageChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm"
-                  >
+                  <select id="stage" value={selectedStage} onChange={handleStageChange} className="bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm">
                     {stageOptions.map((stage, index) => (
                       <option key={index} value={stage}>
                         {stage}
@@ -155,23 +99,15 @@ const Applicants = ({ user }) => {
                   </select>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <label
-                    htmlFor="role"
-                    className="text-sm font-medium text-gray-600"
-                  >
+                  <label htmlFor="role" className="text-sm font-medium text-gray-600">
                     Filter by Job Role:
                   </label>
-                  <select
-                    id="role"
-                    value={selectedRole}
-                    onChange={handleRoleChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm"
-                  >
+                  <select id="role" value={selectedRole} onChange={handleRoleChange} className="bg-gray-50 border border-gray-300 rounded-lg p-2 text-sm">
                     {roleOptions.map((role, index) => (
                       <option key={index} value={role}>
                         {role}
                       </option>
-                    )) }
+                    ))}
                   </select>
                 </div>
               </div>
@@ -185,46 +121,30 @@ const Applicants = ({ user }) => {
                 <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                   <thead className="bg-gray-100">
                     <tr>
-                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
-                        Full Name
-                      </th>
-                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
-                        Hiring Stage
-                      </th>
-                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
-                        Applied Date
-                      </th>
-                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
-                        Job Role
-                      </th>
-                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
-                        Action
-                      </th>
+                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">Full Name</th>
+                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">Hiring Stage</th>
+                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">Applied Date</th>
+                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">Job Role</th>
+                      <th className="px-4 py-2 border-b text-left text-xs sm:text-sm lg:text-base text-gray-600 font-medium">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredApplicants.map((applicant) => (
                       <tr key={applicant.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">
-                          {applicant.fullName}
-                        </td>
+                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">{applicant.fullName}</td>
                         <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base">
-                          <span
-                            className={`px-2 py-1 border rounded ${getHiringStageClass(applicant.hiringStage)}`}
-                          >
+                          <span className={`px-2 py-1 border rounded ${getHiringStageClass(applicant.hiringStage)}`}>
                             {applicant.hiringStage}
                           </span>
                         </td>
-                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">
-                          {applicant.appliedDate}
-                        </td>
-                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">
-                          {applicant.jobRole}
-                        </td>
+                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">{applicant.appliedDate}</td>
+                        <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base text-gray-700">{applicant.jobRole}</td>
                         <td className="px-4 py-2 border-b text-xs sm:text-sm lg:text-base">
-                          <button className="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-sm lg:text-base hover:bg-blue-600 transition duration-300">
-                            See Application
-                          </button>
+                          <Link to={`/applicant-profile/${applicant.id}`}>
+                            <button className="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-sm lg:text-base hover:bg-blue-600 transition duration-300">
+                              See Application
+                            </button>
+                          </Link>
                         </td>
                       </tr>
                     ))}

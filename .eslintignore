@@ -7,7 +7,7 @@ public/assets/
 
 # IDE and editor settings
 .vscode/
-.idea/
+.idea/ 
 
 # OS-specific files
 .DS_Store

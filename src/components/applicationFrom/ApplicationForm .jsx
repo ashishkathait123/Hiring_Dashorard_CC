@@ -6,7 +6,7 @@ const ApplicationForm = ({ job, onClose }) => {
     username: "",
     email: "",
     phone: "",
-    currentJobTitle: "",
+    currentJobTitle: "", 
     linkedin: "",
     portfolio: "",
     additionalInfo: "",

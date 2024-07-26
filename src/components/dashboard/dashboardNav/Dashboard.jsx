@@ -90,11 +90,12 @@ const Dashboard = () => {
       <Sidebar user={user} isOpen={true} />
       <div className="flex-1 flex flex-col p-4 md:ml-64">
         <TopNav />
-        <div className="bg-gray-100 flex-1 p-4">
-          <div className="mb-4">
+        <div className="bg-gray-100 flex-1 p-4 mt-20">
+        <div className="mb-10">
             <h2 className="text-2xl font-semibold">{getGreeting()}, {user?.FullName}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+            
             <div className="bg-purple-500 text-white p-4 md:p-6 rounded-lg shadow">
               <div className="text-xl md:text-2xl font-semibold">{data.candidatesToReview}</div>
               <div className="mt-1 md:mt-2">New candidates to review</div>

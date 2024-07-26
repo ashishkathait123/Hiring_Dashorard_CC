@@ -49,7 +49,7 @@ function Navbar() {
           </Link>
         </nav>
       </div>
-    </header>
+    </header> 
   );
 }
 
