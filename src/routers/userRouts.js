@@ -9,7 +9,7 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
  
 const router = Router();
 
-router
+router 
   .route("/signUp")
   .post(upload.fields([{ name: "profile", maxCount: 1 }]), registerUser);
 router.route("/login").post(loginUser);

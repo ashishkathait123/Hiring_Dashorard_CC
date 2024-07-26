@@ -21,6 +21,6 @@ try {
   app.use("/api/v1/users", userRouter);
 } catch (error) {
   console.log("error throw", error); 
-}
+} 
 
 export { app };
