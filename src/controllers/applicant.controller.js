@@ -1,5 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import  {Applicant} from "../models/Applicant.model.js"
+import { Applicant } from "../models/Applicant.model.js";
 import { ApiError } from "../utils/ApiError.1.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadonCloudnary } from "../utils/cloudnary.js";
@@ -33,8 +33,7 @@ const createApplicant = asyncHandler(async (req, res) => {
   const profilePicturePath = req.files?.profilePicture?.[0]?.path;
   const resumePath = req.files?.resume?.[0]?.path;
 
-  if (!profilePicturePath)
-    throw new ApiError(400, "Profile picture is required");
+  if (!profilePicturePath) throw new ApiError(400, "Profile picture is required");
   if (!resumePath) throw new ApiError(400, "Resume is required");
 
   let profilePicture, resume;
@@ -75,28 +74,38 @@ const createApplicant = asyncHandler(async (req, res) => {
 
   try {
     await newApplicant.save();
-    res
-      .status(201)
-      .json(new ApiResponse(201, "Applicant created successfully"));
+    res.status(201).json(new ApiResponse(201, "Applicant created successfully"));
   } catch (error) {
     console.error("Error saving applicant:", error);
     res.status(500).json(new ApiResponse(500, "Form submission failed"));
   }
 });
 
-
 const getApplicants = asyncHandler(async (req, res) => {
   try {
     const applicants = await Applicant.find({});
-    res
-      .status(200)
-      .json(
-        new ApiResponse(200, "Applicants fetched successfully", applicants)
-      );
+    res.status(200).json(new ApiResponse(200, "Applicants fetched successfully", applicants));
   } catch (error) {
     console.error("Error fetching applicants:", error);
     res.status(500).json(new ApiResponse(500, "Error fetching applicants"));
   }
 });
 
-export { createApplicant, getApplicants };
+const getApplicantById = asyncHandler(async (req, res) => {
+  try {
+    const applicant = await Applicant.findById(req.params.id);
+    if (!applicant) {
+      throw new ApiError(404, "Applicant not found");
+    }
+    res.status(200).json(new ApiResponse(200, "Applicant fetched successfully", applicant));
+  } catch (error) {
+    console.error("Error fetching applicant:", error);
+    if (error instanceof ApiError) {
+      res.status(error.statusCode).json(new ApiResponse(error.statusCode, error.message));
+    } else {
+      res.status(500).json(new ApiResponse(500, "Error fetching applicant"));
+    }
+  }
+});
+
+export { createApplicant, getApplicants, getApplicantById };
