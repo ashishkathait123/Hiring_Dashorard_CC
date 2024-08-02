@@ -38,10 +38,10 @@
 .job-update-item {
   flex: 0 0 auto;
   background-color: #f3f4f6; /* Light gray background */
-  padding: 16px;
+  padding: px;
   border-radius: 8px;
-  margin-right: 16px;
-  width: 300px; /* Adjust width as needed */
+  margin-right: 10px;
+  width: 150px; /* Adjust width as needed */
 }
 
 @keyframes scroll-left {
@@ -70,9 +70,10 @@ body {
 .md\:text-2xl {
   font-size: 1.5rem;
 }
+
 .chart-container {
   width: 100%;
-  min-width: 500px; 
+  min-width: 500px;
 }
 
 .overflow-x-auto {
@@ -82,15 +83,16 @@ body {
 
 @media (max-width: 768px) {
   .chart-container {
-    min-width: 500px; 
+    min-width: 500px;
   }
-} 
+}
 
 @media (max-width: 480px) {
   .chart-container {
     min-width: 200px; /* Adjust for very small screens */
   }
 }
+
 .my-schedule-container {
   margin: 20px;
   padding: 20px;
@@ -101,4 +103,290 @@ body {
 
 .fc {
   font-family: 'Arial', sans-serif;
+}
+/* Main container */
+.flex {
+  display: flex;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.ml-64 {
+  margin-left: 16rem;
+}
+
+.ml-0 {
+  margin-left: 0;
+}
+
+/* Sidebar and TopNav */
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* TopNav */
+.pt-20 {
+  padding-top: 5rem;
+}
+
+/* Content container */
+.p-6 {
+  padding: 1.5rem;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+/* Greeting and Header */
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Calendar and Event Details */
+.bg-white {
+  background-color: #ffffff;
+}
+
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.lg\:grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.col-span-1 {
+  grid-column: span 1 / span 1;
+}
+
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* Event Form */
+.block {
+  display: block;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.bg-indigo-600 {
+  background-color: #4f46e5;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.bg-gray-600 {
+  background-color: #4a5568;
+}
+
+/* Event List */
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.bg-yellow-500 {
+  background-color: #ecc94b;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.bg-red-500 {
+  background-color: #f56565;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

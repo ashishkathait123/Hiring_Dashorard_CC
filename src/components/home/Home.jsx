@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../navbar/Navbar";
 import Footer from "../footer/Footer";
-
-// Dummy data
+import ApplicationForm from "../applicationFrom/ApplicationForm ";
 const dummyJobs = [
   {
     id: 1,
@@ -83,26 +82,22 @@ const dummyJobs = [
     location: "Tehri Garhwal, India",
     types: ["Full-Time"]
   }
-]; 
+];
 
 function Home() {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [location, setLocation] = useState("Tehri Garhwal, India");
   const [search, setSearch] = useState("");
-  const [useDummyData, setUseDummyData] = useState(true); // State to toggle dummy data
-
-  // Pagination states
+  const [useDummyData, setUseDummyData] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 4;
+  const [message, setMessage] = useState("");
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
     if (useDummyData) {
-      // Use dummy data
-      setJobs(dummyJobs);
-      setFilteredJobs(dummyJobs);
-    } else {
-      // Fetch jobs from API
       const fetchJobs = async () => {
         try {
           const response = await axios.get("http://localhost:3000/api/v1/jobs");
@@ -112,8 +107,10 @@ function Home() {
           console.error("Error fetching jobs", error);
         }
       };
-
       fetchJobs();
+    } else {
+      setJobs(dummyJobs);
+      setFilteredJobs(dummyJobs);
     }
   }, [useDummyData]);
 
@@ -123,24 +120,38 @@ function Home() {
       job.location.toLowerCase().includes(location.toLowerCase())
     );
     setFilteredJobs(filtered);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1);
   };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate current jobs
+  const handleApply = (job) => {
+    setSelectedJob(job);
+    setMessage("");
+    setShowApplicationForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowApplicationForm(false);
+    setSelectedJob(null);
+  };
+
+  const handleFormSuccess = () => {
+    setMessage("Application submitted successfully!");
+    // Optionally, you can fetch jobs again or reset the form here
+    alert("Application submitted successfully!")
+  };
+
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
-
-  // Calculate total pages
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   return (
     <div className="bg-custom-image bg-cover bg-center h-screen min-h-screen">
       <Navbar />
 
-      <main className=" container mx-auto px-4 py-8 pt-40">
+      <main className="container mx-auto px-4 py-8 pt-40">
         <h2 className="text-3xl font-bold text-center text-white mb-8 hover:text-indigo-600 transform transition-transform duration-300 hover:scale-110">
           Find your <span className="text-indigo-600">dream job</span>
         </h2>
@@ -148,7 +159,7 @@ function Home() {
         <div className="flex flex-col sm:flex-row justify-center mb-8 space-y-4 sm:space-y-0 sm:space-x-4">
           <input
             type="text"
-            placeholder="Job title or keyword" 
+            placeholder="Job title or keyword"
             className="border rounded py-2 px-4 w-full sm:w-1/2"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -171,67 +182,47 @@ function Home() {
         <div className="bg-custom-image bg-cover bg-center bg-opacity-80 shadow rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 text-blue-800">All Jobs</h3>
           <p className="text-indigo-600 mb-6">Showing {currentJobs.length} of {filteredJobs.length} results</p>
-
+          {message && <div className="bg-green-100 text-green-800 p-4 mb-4 rounded">{message}</div>}
           <div className="space-y-4">
             {currentJobs.map((job, index) => (
-              <div
-                key={index}
-                className="border rounded p-4 flex flex-col sm:flex-row justify-between items-center bg-gray-600 bg-opacity-50"
-              >
-                <div className="mb-4 sm:mb-0 sm:mr-4">
-                  <h4 className="text-lg font-semibold text-white">{job.title}</h4>
+              <div key={index} className="border rounded p-4 flex flex-col sm:flex-row justify-between items-center">
+                <div>
+                  <h4 className="text-xl text-gray-300 font-bold mb-2">{job.title}</h4>
                   <p className="text-gray-400">{job.location}</p>
-                  <div className="flex flex-wrap space-x-2 mt-2">
-                    {job.types.map((type, idx) => (
-                      <span
-                        key={idx}
-                        className={`text-sm ${
-                          type === "Full-Time"
-                            ? "bg-green-100 text-green-800"
-                            : type === "Part-Time"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-blue-100 text-blue-800"
-                        } rounded px-2 py-1`}
-                      >
-                        {type}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-                <button className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700">
-                  Apply
-                </button>
+                <div className="mt-4 sm:mt-0 flex space-x-2">
+                  <button
+                    className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+                    onClick={() => handleApply(job)}
+                  >
+                    Apply
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-        </div>
 
-        <div className=" flex justify-center mt-8 space-x-1 text-white">
-          <button
-            className="border py-2 px-4 rounded bg-white bg-opacity-70 text-gray-800"
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            &lt;
-          </button>
-          {[...Array(totalPages).keys()].map(number => (
-            <button
-              key={number + 1}
-              className={`border py-2 px-4 rounded bg-white bg-opacity-70 text-gray-800 ${currentPage === number + 1 ? "font-bold" : ""}`}
-              onClick={() => paginate(number + 1)}
-            >
-              {number + 1}
-            </button>
-          ))}
-          <button
-            className="border py-2 px-4 rounded bg-white bg-opacity-70 text-gray-800"
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            &gt;
-          </button>
+          <div className="flex justify-center mt-6">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? "bg-indigo-600 text-white" : "bg-gray-200 text-black"}`}
+                onClick={() => paginate(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </main>
+
+      {showApplicationForm && (
+        <ApplicationForm
+          job={selectedJob}
+          onClose={handleCloseForm}
+          onSubmitSuccess={handleFormSuccess}
+        />
+      )}
 
       <Footer />
     </div>

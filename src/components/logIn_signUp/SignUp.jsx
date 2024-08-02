@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import googleImg from "../../assets/google.png";
-import grpImg from "../../assets/grp.jpeg";
+import grpImg from "../../assets/grp.png";
 import logo from "../../assets/logo.png";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Webcam from "react-webcam";
 
 function SignUp() {
   const [FullName, setFullName] = useState("");
@@ -12,12 +14,25 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [profile, setProfile] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null); // New state for captured image
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [capturing, setCapturing] = useState(false);
+  const [role, setRole] = useState("Recruiter"); // Added role state
+  const [showPopup, setShowPopup] = useState(false); // New state for pop-up
+  const webcamRef = useRef(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleCapture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setProfile(imageSrc);
+    setCapturedImage(imageSrc); // Set the captured image
+    setCapturing(false);
+    showPopUpMessage("Profile picture captured!");
   };
 
   const handleSubmit = async (e) => {
@@ -27,8 +42,16 @@ function SignUp() {
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("role", role);    
+
     if (profile) {
-      formData.append("profile", profile);
+      if (typeof profile === "string") {
+        const response = await fetch(profile);
+        const blob = await response.blob();
+        formData.append("profile", blob, "profile.jpg");
+      } else {
+        formData.append("profile", profile);
+      }
     }
 
     try {
@@ -49,16 +72,22 @@ function SignUp() {
     }
   };
 
+  const showPopUpMessage = (msg) => {
+    setMessage(msg);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000); // Hide after 3 seconds
+  };
+
   if (redirect) return <Navigate to={"/login"} />;
 
   return (
-    <div className="flex min-h-screen">
-      <div className="flex flex-col justify-center w-1/2 bg-gray-100 p-10">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="flex flex-col justify-center w-full md:w-auto bg-gray-100 p-10">
         <Link to={"/"}>
           <img
             src={logo}
             alt="ColoredCow Logo"
-            className="h-8 w-32 mb-14 hover:text-black transform transition-transform duration-300 hover:scale-110"
+            className="h-8 md:h-12 mb-14 hover:text-black transform transition-transform duration-300 hover:scale-110"
           />
         </Link>
         <div className="flex flex-col items-center">
@@ -72,7 +101,7 @@ function SignUp() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center w-1/2 p-10 bg-white">
+      <div className="flex flex-col justify-center m-4 md:m-20 w-full md:w-1/3 p-10 border-2 rounded-lg bg-gray-100 drop-shadow-lg">
         <h1 className="text-3xl font-semibold mb-4 text-center">
           Get more opportunities
         </h1>
@@ -86,6 +115,19 @@ function SignUp() {
           <hr className="w-full border-gray-300" />
         </div>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <div className="mb-4 relative">
+            <label className="block mb-2 text-gray-600" htmlFor="role">
+              Select Role
+            </label>
+            <select
+              id="role"
+              className="w-full px-4 py-2 border rounded-lg"
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="recruiter">Recruiter</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
           <div className="mb-4 relative">
             <label className="block mb-2 text-gray-600" htmlFor="FullName">
               Full Name
@@ -146,20 +188,58 @@ function SignUp() {
               onClick={togglePasswordVisibility}
               className="absolute inset-y-0 right-0 px-4 py-2 text-gray-600 hover:text-black mt-7"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </button>
           </div>
           <div className="mb-4 relative">
             <label className="block mb-2 text-gray-600" htmlFor="profile">
-              Profile Picture
+              Choose Profile Picture
             </label>
             <input
               className="w-full px-4 py-2 border rounded-lg"
               type="file"
               id="profile"
               accept="image/*"
-              onChange={(e) => setProfile(e.target.files[0])}
+              onChange={(e) => {
+                setProfile(e.target.files[0]);
+                showPopUpMessage("Profile picture uploaded!");
+              }}
             />
+            <label className="block mb-2 text-gray-600" htmlFor="profile">
+              Or Capture Profile Picture
+            </label>
+            <div className="flex flex-col md:flex-row items-center mt-2">
+              <button
+                type="button"
+                className="mr-2 mb-2 md:mb-0 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:text-black"
+                onClick={() => setCapturing(true)}
+              >
+                Capture
+              </button>
+              {capturing && (
+                <div className="flex flex-col items-center">
+                  <Webcam
+                    audio={false}
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    className="rounded-lg shadow-lg mb-4 w-full md:w-64"
+                  />
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:text-black"
+                    onClick={handleCapture}
+                  >
+                    Take Snapshot
+                  </button>
+                  {capturedImage && (
+                    <div className="mt-4">
+                      <h2 className="text-gray-600">Captured Image:</h2>
+                      <img src={capturedImage} alt="Captured" className="rounded-lg shadow-lg mt-2 w-full md:w-64" />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
           <button className="w-full py-2 text-white bg-indigo-600 rounded-lg hover:text-black">
             Continue
@@ -184,6 +264,7 @@ function SignUp() {
           .
         </p>
         {message && <p className="text-red-500">{message}</p>}
+        {showPopup && <p className="text-green-500 mt-2 text-center">{message}</p>} {/* Pop-up message */}
       </div>
     </div>
   );

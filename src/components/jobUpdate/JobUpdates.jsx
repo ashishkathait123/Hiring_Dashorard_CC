@@ -9,42 +9,12 @@ const dummyJobUpdates = [
     location: "New York, NY",
     categories: [
       { name: "Full-time", color: "blue" },
-      { name: "Remote", color: "green" }
+      { name: "Remote", color: "green" },
     ],
     applied: 50,
-    capacity: 100
+    capacity: 100,
   },
-  {
-    id: "2",
-    title: "Backend Developer",
-    location: "San Francisco, CA",
-    categories: [
-      { name: "Part-time", color: "yellow" }
-    ],
-    applied: 30,
-    capacity: 50
-  },
-  {
-    id: "3",
-    title: "Project Manager",
-    location: "Austin, TX",
-    categories: [
-      { name: "Full-time", color: "blue" }
-    ],
-    applied: 20,
-    capacity: 40
-  },
-  {
-    id: "4",
-    title: "Data Scientist",
-    location: "Boston, MA",
-    categories: [
-      { name: "Full-time", color: "blue" },
-      { name: "On-site", color: "red" }
-    ],
-    applied: 60,
-    capacity: 80
-  }
+  // ... other dummy jobs
 ];
 
 const JobUpdates = () => {
@@ -53,44 +23,61 @@ const JobUpdates = () => {
 
   useEffect(() => {
     if (useDummyData) {
-      // Use dummy data
-      setJobUpdates(dummyJobUpdates);
-    } else {
-      // Fetch job updates from the API
-      axios 
-        .get("/api/job-updates")
-        .then((response) => {
-          setJobUpdates(response.data);
-        })
-        .catch((error) => {
+      const fetchJobs = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/api/v1/jobs");
+          console.log(response.data); // Log the response to check its structure
+
+          // Transform data if necessary
+          const transformedJobs = response.data.map(job => ({
+            ...job,
+            categories: job.categories || [] // Fallback in case categories are missing
+          }));
+
+          setJobUpdates(transformedJobs);
+        } catch (error) {
           console.error("Error fetching job updates:", error);
-        });
+        }
+      };
+      fetchJobs();
+    } else {
+      setJobUpdates(dummyJobUpdates);
     }
   }, [useDummyData]);
 
+  const colorMapping = {
+    blue: "bg-blue-500",
+    green: "bg-green-500",
+    yellow: "bg-yellow-500",
+    red: "bg-red-500",
+  };
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
       <div className="text-xl font-semibold mb-4">Job Updates</div>
       <div className="job-updates-container">
         <div className="job-updates-wrapper">
           {jobUpdates.map((job) => (
-            <div
-              key={job.id}
-              className="job-update-item"
-            >
+            <div key={job.id} className="job-update-item mb-4 p-4 border rounded-lg shadow-sm">
               <div className="text-lg font-semibold mb-2">{job.title}</div>
               <div className="text-sm text-gray-600 mb-2">{job.location}</div>
               <div className="flex flex-wrap mt-2">
-                {job.categories.map((category, index) => (
-                  <div
-                    key={index}
-                    className={`text-xs bg-${category.color}-500 text-white px-2 py-1 rounded-full mr-2 mb-2`}
-                  >
-                    {category.name}
-                  </div>
-                ))}
+                {job.categories && Array.isArray(job.categories) && job.categories.length > 0 ? (
+                  job.categories.map((category, index) => (
+                    <div
+                      key={index}
+                      className={`${colorMapping[category.color]} text-white text-xs px-2 py-1 rounded-full mr-2 mb-2`}
+                    >
+                      {category.name}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-xs text-gray-500">No categories available</div>
+                )}
               </div>
-              <div className="mt-2">{job.applied} applied of {job.capacity} capacity</div>
+              <div className="mt-2">
+                {job.applied} applied of {job.capacity} capacity
+              </div>
             </div>
           ))}
         </div>

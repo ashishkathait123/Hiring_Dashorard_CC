@@ -4,7 +4,8 @@ import axios from "axios";
 import { useUser } from "../userContext/UserContext";
 import logo from "../../assets/logo.png";
 import googleImg from "../../assets/google.png";
-import grpImg from "../../assets/grp.jpeg";
+import grpImg from "../../assets/grp.png";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function LogIn() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ function LogIn() {
   const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showPassword, setShowPassword] = useState(false); 
   const { setUser } = useUser();
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function LogIn() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/v1/users/login",
-        { email, password }
+        { email, password  }
       );
       const { data } = response.data;
       const { user, accessToken } = data;
@@ -66,21 +67,21 @@ function LogIn() {
           <img
             src={logo}
             alt="ColoredCow Logo"
-            className="h-10 w-32 mb-8 hover:text-black transform transition-transform duration-300 hover:scale-110"
+            className="h-1/2 w-1/2  mb-8 hover:text-black transform transition-transform duration-300 hover:scale-110"
           />
         </Link>
         <div className="flex flex-col items-center">
           <img
             src={grpImg}
             alt="Office Scene"
-            className="rounded-lg shadow-lg mb-4"
+            className="rounded-lg drop-shadow-lg mb-4"
           />
           <div className="text-xl font-semibold text-gray-700">
             100+ People got hired
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center w-1/2 p-10 bg-white">
+      <div className="flex flex-col justify-center m-20 w-1/3 p-10 border-2 rounded-lg  bg-gray-100 drop-shadow-lg">
         <h1 className="text-3xl font-semibold mb-4 text-center">
           Welcome Back, Dude
         </h1>
@@ -126,7 +127,7 @@ function LogIn() {
               onClick={togglePasswordVisibility}
               className="absolute inset-y-0 right-0 px-4 py-2 text-gray-600 hover:text-black mt-7"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </button>
           </div>
           <div className="flex items-center mb-4">

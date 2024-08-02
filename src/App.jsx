@@ -33,6 +33,7 @@ function App() {
         <Route path="/my-schedule" element={<MySchedule />} />
         <Route path="/performance-analysis" element={<Performance />} />
         <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
+        <Route path="/applicants" element={<Applicants />} />
       </Routes>
     </BrowserRouter>
   );

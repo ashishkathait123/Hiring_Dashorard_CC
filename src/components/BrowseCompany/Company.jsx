@@ -1,5 +1,5 @@
 import React from "react";
-import grpImg from "../../assets/grp.jpeg";
+import grpImg from "../../assets/grp.png";
 import PImg from "../../assets/prateek.png";
 import PokhiImg from "../../assets/Pokhi.png";
 import Grp2 from "../../assets/grp2.jpeg";

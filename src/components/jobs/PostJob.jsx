@@ -4,45 +4,63 @@ import { useNavigate } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 
 function JobPost() {
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [type, setType] = useState("Full-Time");
-  const [description, setDescription] = useState("");
-  const [responsibilities, setResponsibilities] = useState("");
-  const [whoYouAre, setWhoYouAre] = useState("");
-  const [niceToHaves, setNiceToHaves] = useState("");
-  const [perksBenefits, setPerksBenefits] = useState("");
-  const [categories, setCategories] = useState("");
-  const [applyBefore, setApplyBefore] = useState("");
-  const [salary, setSalary] = useState("");
-  const [postDate, setPostDate] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    location: "",
+    categories: "Full-Time",
+    description: "",
+    responsibilities: "",
+    whoYouAre: "",
+    niceToHaves: "",
+    perksBenefits: "",
+    
+    applyBefore: "",
+    salary: "",
+    postDate: "",
+  });
+  
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); 
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Simple validation
+    if (!formData.title || !formData.location || !formData.description) {
+      setMessage("Please fill in all required fields.");
+      return;
+    }
+  
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/jobs", {
-        title,
-        location,
-        type,
-        description,
-        responsibilities,
-        whoYouAre,
-        niceToHaves,
-        perksBenefits,
-        categories,
-        applyBefore,
-        salary,
-        postDate,
-        dueDate,
-      });
-      setMessage("Job posted successfully");
-      navigate("/");
+      const token = localStorage.getItem('accessToken'); // or wherever you store the token
+      console.log("Token being sent:", token); // Log the token
+
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/jobs",
+        { ...formData, dueDate: formData.applyBefore },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 201) {
+        setMessage("Job posted successfully!");
+        navigate("/");
+      }
     } catch (error) {
       setMessage(error.response?.data?.message || "Job post failed");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
@@ -56,29 +74,31 @@ function JobPost() {
         {/* Job Title */}
         <div className="mb-4">
           <label className="block mb-2 text-gray-600" htmlFor="title">
-            Job Title
+            Job Title <span className="text-red-500">*</span>
           </label>
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             placeholder="Enter job title"
+            required
           />
         </div>
         {/* Location */}
         <div className="mb-4">
           <label className="block mb-2 text-gray-600" htmlFor="location">
-            Location
+            Location <span className="text-red-500">*</span>
           </label>
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="text"
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
             placeholder="Enter job location"
+            required
           />
         </div>
         {/* Job Type */}
@@ -88,9 +108,9 @@ function JobPost() {
           </label>
           <select
             className="w-full px-4 py-2 border rounded-lg"
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
           >
             <option value="Full-Time">Full-Time</option>
             <option value="Part-Time">Part-Time</option>
@@ -100,14 +120,15 @@ function JobPost() {
         {/* Description */}
         <div className="mb-4">
           <label className="block mb-2 text-gray-600" htmlFor="description">
-            Description
+            Description <span className="text-red-500">*</span>
           </label>
           <textarea
             className="w-full px-4 py-2 border rounded-lg"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
             placeholder="Enter job description"
+            required
           ></textarea>
         </div>
         {/* Responsibilities */}
@@ -120,9 +141,9 @@ function JobPost() {
           </label>
           <textarea
             className="w-full px-4 py-2 border rounded-lg"
-            id="responsibilities"
-            value={responsibilities}
-            onChange={(e) => setResponsibilities(e.target.value)}
+            name="responsibilities"
+            value={formData.responsibilities}
+            onChange={handleChange}
             placeholder="Enter job responsibilities"
           ></textarea>
         </div>
@@ -133,9 +154,9 @@ function JobPost() {
           </label>
           <textarea
             className="w-full px-4 py-2 border rounded-lg"
-            id="whoYouAre"
-            value={whoYouAre}
-            onChange={(e) => setWhoYouAre(e.target.value)}
+            name="whoYouAre"
+            value={formData.whoYouAre}
+            onChange={handleChange}
             placeholder="Enter who you are"
           ></textarea>
         </div>
@@ -146,9 +167,9 @@ function JobPost() {
           </label>
           <textarea
             className="w-full px-4 py-2 border rounded-lg"
-            id="niceToHaves"
-            value={niceToHaves}
-            onChange={(e) => setNiceToHaves(e.target.value)}
+            name="niceToHaves"
+            value={formData.niceToHaves}
+            onChange={handleChange}
             placeholder="Enter nice-to-haves"
           ></textarea>
         </div>
@@ -159,9 +180,9 @@ function JobPost() {
           </label>
           <textarea
             className="w-full px-4 py-2 border rounded-lg"
-            id="perksBenefits"
-            value={perksBenefits}
-            onChange={(e) => setPerksBenefits(e.target.value)}
+            name="perksBenefits"
+            value={formData.perksBenefits}
+            onChange={handleChange}
             placeholder="Enter perks and benefits"
           ></textarea>
         </div>
@@ -173,9 +194,9 @@ function JobPost() {
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="text"
-            id="categories"
-            value={categories}
-            onChange={(e) => setCategories(e.target.value)}
+            name="categories"
+            value={formData.categories}
+            onChange={handleChange}
             placeholder="Enter job categories"
           />
         </div>
@@ -187,9 +208,9 @@ function JobPost() {
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="date"
-            id="applyBefore"
-            value={applyBefore}
-            onChange={(e) => setApplyBefore(e.target.value)}
+            name="applyBefore"
+            value={formData.applyBefore}
+            onChange={handleChange}
           />
         </div>
         {/* Salary */}
@@ -200,9 +221,9 @@ function JobPost() {
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="text"
-            id="salary"
-            value={salary}
-            onChange={(e) => setSalary(e.target.value)}
+            name="salary"
+            value={formData.salary}
+            onChange={handleChange}
             placeholder="Enter salary range"
           />
         </div>
@@ -214,9 +235,9 @@ function JobPost() {
           <input
             className="w-full px-4 py-2 border rounded-lg"
             type="date"
-            id="postDate"
-            value={postDate}
-            onChange={(e) => setPostDate(e.target.value)}
+            name="postDate"
+            value={formData.postDate}
+            onChange={handleChange}
           />
         </div>
 

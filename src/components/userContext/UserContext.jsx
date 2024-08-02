@@ -16,8 +16,8 @@ export const UserProvider = ({ children }) => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user"); 
-    } 
+      localStorage.removeItem("user");
+    }
   }, [user]);
 
   useEffect(() => {
@@ -38,10 +38,11 @@ export const UserProvider = ({ children }) => {
 };
 
 const getUserData = async () => {
-  // Replace with actual fetch logic
-   return {
-    FullName:"user name",
-    email: "test@example.com",
+  return {
+   _id:this.user.id,
+    FullName: this.FullName,
+    email: this.email,
     profile: "http://localhost:3000/api/v1/users/profile.jpg",
+    role:this.role
   };
 };

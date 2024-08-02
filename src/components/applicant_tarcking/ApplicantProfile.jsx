@@ -2,47 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import TopNav from "../dashboard/dashboardNav/TopNav";
-
-const dummyData = [
-  {
-    id: 1,
-    name: "John Doe",
-    role: "Software Engineer",
-    rating: 4.5,
-    appliedJobs: [
-      {
-        title: "Front-End Developer",
-        department: "Engineering",
-        type: "Full-Time",
-        daysAgo: "2 days ago",
-        stage: "Interview",
-      },
-    ],
-    contact: {
-      email: "johndoe@example.com",
-      phone: "+1 123-456-7890",
-      instagram: "instagram.com/johndoe",
-      twitter: "twitter.com/johndoe",
-      website: "www.johndoe.com",
-    },
-    personalInfo: {
-      fullName: "John Doe",
-      gender: "Male",
-      dob: "January 1, 1990 (34 y.o)",
-      language: "English, Spanish",
-      address: "123 Main St, Anytown, USA",
-    },
-    professionalInfo: {
-      about:
-        "Experienced software engineer specializing in front-end development with a passion for creating user-friendly applications.",
-      currentJob: "Software Engineer at XYZ Corp",
-      experience: "6 Years",
-      qualification: "BSc in Computer Science",
-      skills: ["React", "JavaScript", "CSS", "HTML"],
-    },
-  },
-  // Add more dummy data as needed
-];
+import axios from "axios";
 
 const ApplicantProfile = () => {
   const { id } = useParams();
@@ -50,10 +10,16 @@ const ApplicantProfile = () => {
   const [activeTab, setActiveTab] = useState("Applicant Profile");
 
   useEffect(() => {
-    const applicant = dummyData.find(
-      (applicant) => applicant.id === parseInt(id)
-    );
-    setApplicantData(applicant);
+    const fetchApplicantData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/v1/Applicants/${id}`);
+        setApplicantData(response.data.message);
+      } catch (error) {
+        console.error("Error fetching applicant data:", error);
+      }
+    };
+
+    fetchApplicantData();
   }, [id]);
 
   if (!applicantData) {
@@ -89,16 +55,16 @@ const ApplicantProfile = () => {
                   <div className="bg-white p-4 md:p-6 rounded-lg shadow col-span-1">
                     <div className="flex items-center">
                       <img
-                        src="/path/to/avatar.jpg"
+                        src={applicantData.profilePicture || "/path/to/default-avatar.jpg"}
                         alt="Avatar"
                         className="w-16 h-16 rounded-full mr-4"
                       />
                       <div>
                         <h3 className="text-xl font-semibold">
-                          {applicantData.personalInfo.fullName}
+                          {applicantData.fullName}
                         </h3>
                         <p className="text-sm text-gray-600">
-                          {applicantData.role}
+                          {applicantData.jobRole}
                         </p>
                         <div className="flex items-center mt-2">
                           <span className="text-yellow-500 text-lg font-semibold">
@@ -108,10 +74,10 @@ const ApplicantProfile = () => {
                         </div>
                         <div className="mt-2">
                           <span
-                            className={`inline-block w-2 h-2 rounded-full ${applicantData.appliedJobs[0].stage === "Interview" ? "bg-blue-500" : "bg-gray-500"}`}
+                            className={`inline-block w-2 h-2 rounded-full ${applicantData.hiringStage === "Interview" ? "bg-blue-500" : "bg-gray-500"}`}
                           ></span>
                           <span className="ml-2">
-                            {applicantData.appliedJobs[0].stage}
+                            {applicantData.hiringStage}
                           </span>
                         </div>
                       </div>
@@ -143,11 +109,11 @@ const ApplicantProfile = () => {
                     <div className="mt-4">
                       <h4 className="font-semibold">Contact</h4>
                       <ul className="mt-2">
-                        <li>Email: {applicantData.contact.email}</li>
-                        <li>Phone: {applicantData.contact.phone}</li>
-                        <li>Instagram: {applicantData.contact.instagram}</li>
-                        <li>Twitter: {applicantData.contact.twitter}</li>
-                        <li>Website: {applicantData.contact.website}</li>
+                        <li>Email: {applicantData.email}</li>
+                        <li>Phone: {applicantData.phone}</li>
+                        <li>Instagram: {applicantData.instagram}</li>
+                        <li>Twitter: {applicantData.twitter}</li>
+                        <li>Website: {applicantData.website}</li>
                       </ul>
                     </div>
                   </div>
@@ -157,47 +123,47 @@ const ApplicantProfile = () => {
                       <ul className="mt-2">
                         <li>
                           <strong>Full Name:</strong>{" "}
-                          {applicantData.personalInfo.fullName}
+                          {applicantData.fullName}
                         </li>
                         <li>
                           <strong>Gender:</strong>{" "}
-                          {applicantData.personalInfo.gender}
+                          {applicantData.gender}
                         </li>
                         <li>
                           <strong>Date of Birth:</strong>{" "}
-                          {applicantData.personalInfo.dob}
+                          {applicantData.dob}
                         </li>
                         <li>
                           <strong>Language:</strong>{" "}
-                          {applicantData.personalInfo.language}
+                          {applicantData.language}
                         </li>
                         <li>
                           <strong>Address:</strong>{" "}
-                          {applicantData.personalInfo.address}
+                          {applicantData.address}
                         </li>
                       </ul>
                     </div>
                     <div className="mb-4">
                       <h4 className="font-semibold">Professional Info</h4>
                       <p className="mt-2">
-                        {applicantData.professionalInfo.about}
+                        {applicantData.about}
                       </p>
                       <ul className="mt-2">
                         <li>
                           <strong>Current Job:</strong>{" "}
-                          {applicantData.professionalInfo.currentJob}
+                          {applicantData.currentJob}
                         </li>
                         <li>
                           <strong>Experience:</strong>{" "}
-                          {applicantData.professionalInfo.experience}
+                          {applicantData.experience}
                         </li>
                         <li>
                           <strong>Qualification:</strong>{" "}
-                          {applicantData.professionalInfo.qualification}
+                          {applicantData.qualification}
                         </li>
                         <li>
                           <strong>Skills:</strong>{" "}
-                          {applicantData.professionalInfo.skills.join(", ")}
+                          {applicantData.skills.join(", ")}
                         </li>
                       </ul>
                     </div>

@@ -1,55 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import TopNav from '../dashboard/dashboardNav/TopNav';
-import Sidebar from '../sidebar/Sidebar';
-import Chart from 'react-apexcharts';
-import axios from 'axios';
-
+import React, { useState, useEffect } from "react";
+import TopNav from "../dashboard/dashboardNav/TopNav";
+import Sidebar from "../sidebar/Sidebar";
+import Chart from "react-apexcharts";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../userContext/UserContext";
 // Dummy Data
 const DummysourceEffectivenessData = [
-  { name: 'Direct', value: 48 },
-  { name: 'Social', value: 23 },
-  { name: 'Organic', value: 24 },
-  { name: 'Other', value: 5 }
+  { name: "Direct", value: 48 },
+  { name: "Social", value: 23 },
+  { name: "Organic", value: 24 },
+  { name: "Other", value: 5 },
 ];
 
 const DummytimeToHireData = [
-  { date: '19 Jul', value: 120 },
-  { date: '20 Jul', value: 135 },
-  { date: '21 Jul', value: 125 },
-  { date: '22 Jul', value: 130 },
-  { date: '23 Jul', value: 129 }
+  { date: "19 Jul", value: 120 },
+  { date: "20 Jul", value: 135 },
+  { date: "21 Jul", value: 125 },
+  { date: "22 Jul", value: 130 },
+  { date: "23 Jul", value: 129 },
 ];
 
 const Performance = () => {
   const [totalViews, setTotalViews] = useState(2356); // Dummy data
   const [totalApplied, setTotalApplied] = useState(132); // Dummy data
-  const [sourceEffectivenessData, setSourceEffectivenessData] = useState(DummysourceEffectivenessData); // Initialize with dummy data
+  const [sourceEffectivenessData, setSourceEffectivenessData] = useState(
+    DummysourceEffectivenessData
+  ); // Initialize with dummy data
   const [timeToHireData, setTimeToHireData] = useState(DummytimeToHireData); // Initialize with dummy data
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [viewsResponse, appliedResponse, sourceResponse, hireResponse] = await Promise.all([
-          axios.get('/api/total-views'),
-          axios.get('/api/total-applied'),
-          axios.get('/api/source-effectiveness'), 
-          axios.get('/api/time-to-hire-trends')
-        ]);
+        const [viewsResponse, appliedResponse, sourceResponse, hireResponse] =
+          await Promise.all([
+            axios.get("/api/total-views"),
+            axios.get("/api/total-applied"),
+            axios.get("/api/source-effectiveness"),
+            axios.get("/api/time-to-hire-trends"),
+          ]);
 
-        console.log('API Response:', {
+        console.log("API Response:", {
           viewsResponse: viewsResponse.data,
           appliedResponse: appliedResponse.data,
           sourceResponse: sourceResponse.data,
-          hireResponse: hireResponse.data
+          hireResponse: hireResponse.data,
         });
 
         setTotalViews(viewsResponse.data.totalViews);
         setTotalApplied(appliedResponse.data.totalApplied);
-        setSourceEffectivenessData(Array.isArray(sourceResponse.data) ? sourceResponse.data : DummysourceEffectivenessData);
-        setTimeToHireData(Array.isArray(hireResponse.data) ? hireResponse.data : DummytimeToHireData);
+        setSourceEffectivenessData(
+          Array.isArray(sourceResponse.data)
+            ? sourceResponse.data
+            : DummysourceEffectivenessData
+        );
+        setTimeToHireData(
+          Array.isArray(hireResponse.data)
+            ? hireResponse.data
+            : DummytimeToHireData
+        );
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
 
         // Fallback to dummy data if any API call fails
         setSourceEffectivenessData(DummysourceEffectivenessData);
@@ -61,24 +87,26 @@ const Performance = () => {
   }, []);
 
   const sourceEffectivenessOptions = {
-    labels: sourceEffectivenessData.map(source => source.name),
-    colors: ['#FFD700', '#1E90FF', '#32CD32', '#A9A9A9'],
+    labels: sourceEffectivenessData.map((source) => source.name),
+    colors: ["#FFD700", "#1E90FF", "#32CD32", "#A9A9A9"],
     legend: {
-      position: 'bottom',
+      position: "bottom",
     },
   };
 
-  const sourceEffectivenessSeries = sourceEffectivenessData.map(source => source.value);
+  const sourceEffectivenessSeries = sourceEffectivenessData.map(
+    (source) => source.value
+  );
 
   const timeToHireOptions = {
     chart: {
-      id: 'time-to-hire',
+      id: "time-to-hire",
     },
     xaxis: {
-      categories: timeToHireData.map(entry => entry.date),
+      categories: timeToHireData.map((entry) => entry.date),
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
     },
     markers: {
       size: 5,
@@ -87,8 +115,8 @@ const Performance = () => {
 
   const timeToHireSeries = [
     {
-      name: 'Hire',
-      data: timeToHireData.map(entry => entry.value),
+      name: "Hire",
+      data: timeToHireData.map((entry) => entry.value),
     },
   ];
 
@@ -96,12 +124,22 @@ const Performance = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
 
-      <div className={`flex-grow transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-0"}`}>
+      <div
+        className={`flex-grow transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-0"}`}
+      >
         <TopNav />
         <main className="flex-1 p-6 bg-gray-100">
+          <div className="mb-4 mt-20">
+            <h2 className="text-2xl  font-bold">
+              {getGreeting()}, {user?.FullName}
+            </h2>
+          </div>
+
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Performance Analysis</h1>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">More Action</button>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded">
+              More Action
+            </button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div className="bg-white p-6 rounded shadow">
