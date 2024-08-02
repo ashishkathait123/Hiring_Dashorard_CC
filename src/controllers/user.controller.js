@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.1.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import { uploadonCloudnary } from "../utils/cloudnary.js";
 export const verifyJwt = asyncHandler(async (req, _, next) => {
   try {
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
@@ -38,7 +38,7 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { FullName, password, email, username } = req.body;
+  const { FullName, password, email, username, role} = req.body;
   if ([FullName, password, email, username].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
@@ -63,6 +63,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     username: username.toLowerCase(),
+    role
   });
   const createdUser = await User.findById(user._id).select("-password -refreshToken");
   if (!createdUser) {
@@ -72,7 +73,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email} = req.body;
 
   if (!(email || username)) {
     throw new ApiError(400, "Username or email is required");
@@ -101,6 +102,8 @@ const loginUser = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, { user: loggedInUser, accessToken, refreshToken }, "User logged in successfully"));
 });
+
+
 
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(req.user._id, {
